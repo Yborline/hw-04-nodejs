@@ -20,7 +20,7 @@ const listContacts = async (req, res, next) => {
 const getContactById = async (req, res, next) => {
   const { contactId } = req.params;
   const result = await Contact.findById(contactId);
-  // const result = await Contact.findOne({ _id: contactId });
+
   if (!result) {
     res.status(404).json({
       status: "error",

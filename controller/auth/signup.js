@@ -1,4 +1,6 @@
 const { User } = require("../../models");
+const gravatar = require("gravatar");
+const Jimp = require("jimp");
 
 const signup = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -9,7 +11,15 @@ const signup = async (req, res, next) => {
       message: "Email in use",
     });
   }
-  const newUser = new User({ name, email });
+  const avatarURL = gravatar.url(email);
+  Jimp.read(avatarURL)
+    .then((avatar) => {
+      return avatar.resize(250, 250); // resize
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  const newUser = new User({ name, email, avatarURL });
   newUser.setPassword(password);
   newUser.save();
 
@@ -17,8 +27,10 @@ const signup = async (req, res, next) => {
     status: "201 created",
     responseBody: {
       user: {
+        name,
         email,
         password,
+        avatarURL,
       },
     },
   });
