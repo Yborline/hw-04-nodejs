@@ -6,11 +6,11 @@ const { SECRET_KEY } = process.env;
 const login = async (req, res) => {
   const { email, password, subscription } = req.body;
   const user = await User.findOne({ email });
-  if (!user || !user.comparePassword(password)) {
+  if (!user || !user.verify || !user.comparePassword(password)) {
     res.status(400).json({
       status: "Unauthorized",
       code: 400,
-      message: "Email or password is wrong",
+      message: "Email or password is wrong or not verify",
     });
   }
 

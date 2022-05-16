@@ -1,6 +1,8 @@
 const { User } = require("../../models");
 const gravatar = require("gravatar");
 const Jimp = require("jimp");
+const { nanoid } = require("nanoid");
+const { nodeEmail } = require("../../helpers");
 
 const signup = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -19,10 +21,17 @@ const signup = async (req, res, next) => {
     .catch((err) => {
       console.error(err);
     });
-  const newUser = new User({ name, email, avatarURL });
+  const verificationToken = nanoid();
+  const newUser = new User({ name, email, avatarURL, verificationToken });
   newUser.setPassword(password);
-  newUser.save();
+  await newUser.save();
 
+  const mail = {
+    to: email,
+    subject: " подтверждение Email",
+    html: `<a target="_blank" href="http://localhost:3000/api/users/verify/${verificationToken}:">Подтвердить Email</a>`,
+  };
+  await nodeEmail(mail);
   res.status(201).json({
     status: "201 created",
     responseBody: {
@@ -31,6 +40,7 @@ const signup = async (req, res, next) => {
         email,
         password,
         avatarURL,
+        verificationToken,
       },
     },
   });
