@@ -11,6 +11,7 @@ const contactSchema = Schema(
     },
     email: {
       type: String,
+      required: true,
     },
     phone: {
       type: String,
@@ -20,6 +21,11 @@ const contactSchema = Schema(
     favorite: {
       type: Boolean,
       default: false,
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
     },
   },
   { versionKey: false, timestamps: true }
@@ -42,20 +48,3 @@ const favoriteChema = Joi.object({
 const Contact = model("contact", contactSchema);
 
 module.exports = { Contact, JoiSchema, favoriteChema };
-
-
-
-// THIS FOR ME  = add(contactSchema)
-//     "basic" "work", "home"
-//     status: {
-//       type: String,
-//       enum: ["bacis", "work", "home"],
-//       default: "basic",
-//     },
-//     code: {
-//       type: String,
-//       required: true,
-//       unique: true,
-//       match: /^[0-9]{9}$/,
-//     },
-    

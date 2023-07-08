@@ -22,6 +22,7 @@ const validationFavorite = (schema) => {
         message: "missing field favorite",
       });
     }
+    next();
   };
 };
 

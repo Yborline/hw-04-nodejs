@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { auth } = require("../../middlewares/auth");
 const {
   validation,
   validationFavorite,
@@ -15,11 +16,11 @@ const {
   updatFavorite,
 } = require("../../controller/controller");
 
-router.get("/", listContacts);
+router.get("/", auth, listContacts);
 
 router.get("/:contactId", getContactById);
 
-router.post("/", validationMiddleware, addContact);
+router.post("/", auth, validationMiddleware, addContact);
 
 router.delete("/:contactId", removeContact);
 
