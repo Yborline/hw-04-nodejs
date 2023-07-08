@@ -16,7 +16,7 @@ const repeatVerify = async (req, res) => {
   const mail = {
     to: email,
     subject: " подтверждение Email",
-    html: `<a target="_blank" href="http://localhost:3000/api/users/verify/:${verificationToken}">Подтвердить Email</a>`,
+    html: `<a target="_blank" href="https://numberphones.onrender.com/api/users/verify/:${verificationToken}">Подтвердить Email</a>`,
   };
   if (!verify) {
     await nodeEmail(mail);
